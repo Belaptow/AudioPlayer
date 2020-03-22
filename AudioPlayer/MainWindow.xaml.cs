@@ -18,6 +18,7 @@ using NAudio;
 using NAudio.Wave;
 using System.ComponentModel;
 using System.Globalization;
+using System.Configuration;
 
 
 namespace AudioPlayer
@@ -47,9 +48,17 @@ namespace AudioPlayer
                 InitializeComponent();
                 Debug.WriteLine("\n INITIALIZING \n");
                 Debug.WriteLine("\nПуть к исполняемогу файлу: " + exePath + "\n");
-                workingFolderPath = exePath + workingFolderPath;
-                System.IO.Directory.CreateDirectory(workingFolderPath);
+                if (ConfigurationManager.AppSettings["firstLaunch"] == "true")
+                {
+                    Debug.WriteLine("\nПЕРВЫЙ ЗАПУСК\n");
+                    MessageBox.Show("Первый запуск");
+                    ConfigurationManager.AppSettings["firstLaunch"] = "false";
+                    ConfigurationManager.AppSettings["workingFolder"] = exePath + workingFolderPath;
+                    System.IO.Directory.CreateDirectory(ConfigurationManager.AppSettings["workingFolder"]);
+                }
+                workingFolderPath = ConfigurationManager.AppSettings["workingFolder"];
                 RefreshDataGrid();
+                tracksDataGrid.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -216,6 +225,18 @@ namespace AudioPlayer
             RefreshDataGrid();
         }
 
+        //Выбор рабочей директории
+        private void contentControlSelectWorkingFolder_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\n" + ex + "\n");
+            }
+        }
     }
 
     public class Track
