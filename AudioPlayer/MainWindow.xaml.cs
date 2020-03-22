@@ -19,6 +19,7 @@ using NAudio.Wave;
 using System.ComponentModel;
 using System.Globalization;
 using System.Configuration;
+using System.Xml;
 
 
 namespace AudioPlayer
@@ -39,6 +40,7 @@ namespace AudioPlayer
         public string[] allowedExtensions = new string[] { ".wav", ".mp3" };
         public WaveFileReader wavReader;
         public Mp3FileReader mp3Reader;
+        public XmlDocument settingsFile = new XmlDocument();
         #endregion
 
         public MainWindow()
@@ -46,19 +48,24 @@ namespace AudioPlayer
             try
             {
                 InitializeComponent();
+                settingsFile.Load(exePath + @"\Settings.xml");
                 Debug.WriteLine("\n INITIALIZING \n");
                 Debug.WriteLine("\nПуть к исполняемогу файлу: " + exePath + "\n");
-                if (ConfigurationManager.AppSettings["firstLaunch"] == "true")
+                if (settingsFile.DocumentElement["firstLaunch"].InnerText == "true")
                 {
+                    
                     Debug.WriteLine("\nПЕРВЫЙ ЗАПУСК\n");
                     MessageBox.Show("Первый запуск");
-                    ConfigurationManager.AppSettings["firstLaunch"] = "false";
-                    ConfigurationManager.AppSettings["workingFolder"] = exePath + workingFolderPath;
-                    System.IO.Directory.CreateDirectory(ConfigurationManager.AppSettings["workingFolder"]);
+                    settingsFile.DocumentElement["firstLaunch"].InnerText = "false";
+                    settingsFile.DocumentElement["workingFolder"].InnerText = exePath + workingFolderPath;
+                    System.IO.Directory.CreateDirectory(settingsFile.DocumentElement["workingFolder"].InnerText);
                 }
-                workingFolderPath = ConfigurationManager.AppSettings["workingFolder"];
+                //workingFolderPath = exePath + workingFolderPath;
+                //System.IO.Directory.CreateDirectory(workingFolderPath);
+                workingFolderPath = settingsFile.DocumentElement["workingFolder"].InnerText;
                 RefreshDataGrid();
                 tracksDataGrid.SelectedIndex = 0;
+                settingsFile.Save(exePath + @"\Settings.xml");
             }
             catch (Exception ex)
             {
