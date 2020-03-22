@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="bin.png" />
+    <None Remove="next.png" />
+    <None Remove="open-folder.png" />
+    <None Remove="pause.png" />
+    <None Remove="play.png" />
+    <None Remove="plus.png" />
+    <None Remove="prev.png" />
+    <None Remove="refresh.png" />
+    <None Remove="stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="bin.png" />
+    <Resource Include="next.png" />
+    <Resource Include="open-folder.png" />
+    <Resource Include="pause.png" />
+    <Resource Include="play.png" />
+    <Resource Include="plus.png" />
+    <Resource Include="prev.png" />
+    <Resource Include="refresh.png" />
+    <Resource Include="stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="defaultWorkingFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="1.10.0" />
+  </ItemGroup>
+
+</Project>
